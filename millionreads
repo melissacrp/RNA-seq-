@@ -1,0 +1,5 @@
+#in order to get one million read per .fastq file 
+
+cd /Volumes/MelissaCRP/Transcriptomics-RNA-seq/Musa-RNA-seq #going into the folder that contains my fastq files
+for x in *.fastq; do head -n 4000000 $x > "filt-$x"; mv "filt-$x" /Volumes/MelissaCRP/Transcriptomics-RNA-seq/filtered; done 
+#a loop was done to get the first 4 million rows in a new file, which correspond to 1 million reads. Then the new files were stored in a directory called filtered 
