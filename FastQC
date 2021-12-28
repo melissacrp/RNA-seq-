@@ -1,0 +1,2 @@
+#Into the directory that has the fastp filtered sequences
+fastqc -o fastQC-filt *
