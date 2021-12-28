@@ -1,2 +1,2 @@
 #Into the directory that has the fastp filtered sequences
-fastqc -o fastQC-filt *
+fastqc -o /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastQC-filt *
