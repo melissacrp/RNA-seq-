@@ -1,2 +1,3 @@
+conda install -c bioconda fastqc
 #Into the directory that has the fastp filtered sequences
 fastqc -o /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastQC-filt *
