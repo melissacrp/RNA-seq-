@@ -1,0 +1,3 @@
+conda install -c biobuilds hisat2
+wget https://www.ncbi.nlm.nih.gov/genome/?term=musa%20acuminata 
+hisat2 -q
