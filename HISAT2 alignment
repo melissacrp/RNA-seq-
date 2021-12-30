@@ -2,8 +2,9 @@ conda install -c biobuilds hisat2
 
 #Do I need to find the assembly of the two varieties (Williams & Tuu Gia) and then map each fastq to its corresponding genome?
 
-wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/845/865/GCA_904845865.1_assembly_for_Musa_acuminata_subsp._malaccensis/
-hisat2-build genome musa_index
+wget -p musa_gen https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/845/865/GCA_904845865.1_assembly_for_Musa_acuminata_subsp._malaccensis/
+hisat2-build musa_gen musa_index
 
-for x in 
-hisat2 -x musa_index -U 
+for x in *Tuu_Gia*; do hisat2 -x musa_index -U $x; done
+for x in *Williams*; do hisat2 -x musa_index -U $x; done
+
