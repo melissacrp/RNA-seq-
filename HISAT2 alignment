@@ -1,19 +1,12 @@
 conda install -c bioconda hisat2
 conda install -c bioconda agat #to convert gff to gtf 
 
-#Do I need to find the assembly of the two varieties (Williams & Tuu Gia) and then map each fastq to its corresponding genome?
-
-wget -p musa_gen https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/904/845/865/GCA_904845865.1_assembly_for_Musa_acuminata_subsp._malaccensis/
-hisat2-build musa_gen musa_index
-
-for x in *Tuu_Gia*; do hisat2 -x musa_index -U $x; done
-for x in *Williams*; do hisat2 -x musa_index -U $x; done
 
 
-agat_convert_sp_gff2gtf.pl -gff Musa_acuminata_pahang_v4.gff3 -o Musa_acuminata_pahang_v4.gtf
+agat_convert_sp_gff2gtf.pl -gff Musa_acuminata_pahang_v4.gff3 -o Musa_acuminata_pahang_v4.gtf #to convert from gff3 to gtf
 
-sed 's/$/;/' Musa_acuminata_pahang_v4.gtf > edit-Musa_acuminata_pahang_v4.gtf
-sed 's/ID=/transcript_id /;s/Parent=/gene_id /' edit-Musa_acuminata_pahang_v4.gtf > final-Musa_acuminata_pahang_v4.gtf
+sed 's/$/;/' Musa_acuminata_pahang_v4.gtf > edit-Musa_acuminata_pahang_v4.gtf #to finish the line with ; in order for hisat2_extract to function
+sed 's/ID=/transcript_id /;s/Parent=/gene_id /' edit-Musa_acuminata_pahang_v4.gtf > final-Musa_acuminata_pahang_v4.gtf #changing id and parent in order to function in hisat2_extract
 
 hisat2_extract_splice_sites.py final-Musa_acuminata_pahang_v4.gtf >musa.ss
 hisat2_extract_exons.py final-Musa_acuminata_pahang_v4.gtf >musa.exon
