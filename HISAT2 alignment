@@ -11,3 +11,5 @@ sed 's/ID=/transcript_id /;s/Parent=/gene_id /' edit-Musa_acuminata_pahang_v4.gt
 hisat2_extract_splice_sites.py final-Musa_acuminata_pahang_v4.gtf >musa.ss
 hisat2_extract_exons.py final-Musa_acuminata_pahang_v4.gtf >musa.exon
 hisat2-build --ss musa.ss --exon musa.exon Musa_acuminata_pahang_v4.fa banana-index
+
+hisat2 --dta -x /Users/melissa/Desktop/filtered/index/banana-index -U out-filt-Tuu_Gia_Ctrl_6_12_hpi_S7_R1_001.fastq -S Tuu_Gia_Ctrl_6_12_hpi_S7_R1_001.sam
