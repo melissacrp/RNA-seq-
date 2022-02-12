@@ -1,0 +1,11 @@
+conda install -c bioconda star
+
+/home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.fasta #genome
+/home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf 
+/home/melissarp_mr/index #para guardar el indice
+/home/melissarp_mr/Trans/fastp/out-fastp #reads
+
+STAR --runThreadN 64 --runMode genomeGenerate --genomeDir index --genomeFastaFiles /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.fasta --sjdbGTFfile /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf 
+mkdir starAligned 
+
+STAR --runThreadN 64 --genomeDir /home/melissarp_mr/index --readFilesIn 
