@@ -9,5 +9,5 @@ for x in *.fastq; do head -n 4000000 $x > /Volumes/MelissaCRP/Transcriptomics-RN
 
 
 
-
+head -n 3776216 out-filt-Williams_Ctrl_6_12_hpi_S1_R1_001.fastq > new-out-filt-Williams_Ctrl_6_12_hpi_S1_R1_001.fastq
 
