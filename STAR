@@ -16,3 +16,5 @@ samtools sort Aligned.out.bam -o sorted_Aligned.out.bam
 
 for x in *.fastq; do STAR --runThreadN 32 --genomeDir /home/melissarp_mr/index --outFileNamePrefix $x --readFilesIn $x; done  
 for x in *.Log.final.out; do mv $x /home/melissarp_mr/stats-star; done
+
+for x in fastqsfilt; do mkdir "$x-map"; done
