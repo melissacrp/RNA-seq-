@@ -1,0 +1,6 @@
+conda install -c bioconda subread
+
+mkdir counts
+
+featureCounts -T 4 -s 2 -a /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf -o /home/melissarp_mr/counts/banana_featurecounts.txt /home/melissarp_mr/mapping/sam-file-map/*sam
+
