@@ -19,3 +19,14 @@ wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5019-a
 sudo gdebi rstudio-server-1.2.5019-amd64.deb
 sudo apt-get install libcurl4-openssl-dev libssl-dev libxml2-dev
 
+#to execute R
+sudo R
+
+#to install RStudio, not working
+wget https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-1.2.5042-amd64.deb
+sudo gdebi rstudio-server-1.2.5042-amd64.deb
+
+#install edgeR
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.12")
