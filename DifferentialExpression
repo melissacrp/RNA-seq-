@@ -27,6 +27,41 @@ wget https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-1.2.5042
 sudo gdebi rstudio-server-1.2.5042-amd64.deb
 
 #install edgeR
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install(version = "3.12")
+source("https://bioconductor.org/biocLite.R")
+biocLite("edgeR")
+
+#location count file
+/home/melissarp_mr/counts/banana_featurecounts.txt 
+
+#location directory where im going to save R things
+/home/melissarp_mr/Rproy
+
+#Quick start according to the edgeR User's guide 
+#reading the dataset in R
+matrixDGA <- read.delim(file = "/home/melissarp_mr/counts/banana_featurecounts.txt", header = TRUE, row.names("Symbol"))
+group <- factor(c(1,1,2,2)) #edit this part to classify treatments, so I need to count the number of columns and assign a number to the group
+#DGE list data class
+y <- DGEList(counts=matrixDGA,group=group)
+#filtering low reads
+keep <- filterByExpr(y)
+y <- y[keep,,keep.lib.sizes=FALSE]
+y <- calcNormFactors(y)
+design <- model.matrix(~group)
+y <- estimateDisp(y,design)
+
+#To perform likelyhood ratio test
+fit <- glmFit(y,design)
+lrt <- glmLRT(fit,coef=2)
+topTags(lrt)
+
+#DGE list data class
+
+
+
+
+
+
+
+
+
+
