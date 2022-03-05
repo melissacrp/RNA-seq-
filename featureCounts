@@ -4,3 +4,8 @@ mkdir counts
 
 featureCounts -T 4 -s 2 -a /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf -o /home/melissarp_mr/counts/banana_featurecounts.txt /home/melissarp_mr/mapping/sam-file-map/*sam
 
+#to remove the first row
+sed '1d' banana_featurecounts.txt > tmpfile; mv tmpfile banana_featurecounts.txt #to remove the first row
+
+#To select the first and last twelve rows in order to make easier the DGEA
+awk '{print $1,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18}' banana_featurecounts.txt > clean_banana_featurecounts.txt
