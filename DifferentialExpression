@@ -14,6 +14,12 @@ sudo apt-get upgrade
 
 sudo apt-get install r-base r-base-dev
 
+deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
+
+sudo apt-get install r-base=4.1.1-1precise0
+
+
 sudo apt-get install gdebi-core
 wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5019-amd64.deb
 sudo gdebi rstudio-server-1.2.5019-amd64.deb
@@ -38,8 +44,8 @@ biocLite("edgeR")
 
 #Quick start according to the edgeR User's guide 
 #reading the dataset in R
-matrixDGA <- read.delim(file = "/home/melissarp_mr/counts/banana_featurecounts.txt", header = TRUE, row.names("Symbol"))
-group <- factor(c(1,1,2,2)) #edit this part to classify treatments, so I need to count the number of columns and assign a number to the group
+matrixDGA <- read.delim(file = "/home/melissarp_mr/counts/clean_banana_featurecounts.txt", header = TRUE, sep="\t", row.names("Symbol"))
+group <- factor(c("CR","R12","R24","R3","R6","R7","CS","S12","S24","S3","S6","S7")) #edit this part to classify treatments, so I need to count the number of columns and assign a number to the group
 #DGE list data class
 y <- DGEList(counts=matrixDGA,group=group)
 #filtering low reads
@@ -49,7 +55,7 @@ y <- calcNormFactors(y)
 design <- model.matrix(~group)
 y <- estimateDisp(y,design)
 
-#To perform likelyhood ratio test
+#To perform likelihood ratio test
 fit <- glmFit(y,design)
 lrt <- glmLRT(fit,coef=2)
 topTags(lrt)
