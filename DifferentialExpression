@@ -1,70 +1,75 @@
-#install brew
-sudo apt-get install build-essential procps curl file git
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-brew doctor
+## Gene-level differential expression analysis using edgeR - based of arabdesign
 
-#install wget
-brew install wget
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(version = "3.12")
 
-#install R
-sudo apt-get update
-sudo apt-get upgrade
-
-sudo apt-get install r-base r-base-dev
-
-deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
-
-sudo apt-get install r-base=4.1.1-1precise0
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
+BiocManager::install("edgeR")
 
 
-sudo apt-get install gdebi-core
-wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5019-amd64.deb
-sudo gdebi rstudio-server-1.2.5019-amd64.deb
-sudo apt-get install libcurl4-openssl-dev libssl-dev libxml2-dev
 
-#to execute R
-sudo R
+BiocManager::install("limma")
 
-#to install RStudio, not working
-wget https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-1.2.5042-amd64.deb
-sudo gdebi rstudio-server-1.2.5042-amd64.deb
+install.packages("statmod")
+library(edgeR)
+getwd()
 
-#install edgeR
-source("https://bioconductor.org/biocLite.R")
-biocLite("edgeR")
 
-#location count file
-/home/melissarp_mr/counts/banana_featurecounts.txt 
+#common info
+matrixDGA <- read.delim(file = "/Users/melissa/Desktop/Transcriptomics&Bioinformatics | Thesis/counts/clean_banana_featurecounts.txt", header = TRUE, 
+                        sep=" ")
+Cultivar <- factor(c("T","T","T","T","T","T","W","W","W","W","W","W"))
+tpi <- factor(c("C","12h","24h","3d","6d","7d","C","12h","24h","3d","6d","7d")) #C is 6-12h with mock
+colnames(matrixDGA) = c("Gene ID","CT6-12h","T12h","T24h","T3d","T6d","T7d","CW6-12h","W12h","W24h","W3d","W6d","W7d")
+y <- DGEList(counts=matrixDGA[,2:13], genes=matrixDGA[,1],group = Cultivar)
 
-#location directory where im going to save R things
-/home/melissarp_mr/Rproy
 
-#Quick start according to the edgeR User's guide 
-#reading the dataset in R
-matrixDGA <- read.delim(file = "/home/melissarp_mr/counts/clean_banana_featurecounts.txt", header = TRUE, sep="\t", row.names("Symbol"))
-group <- factor(c("CR","R12","R24","R3","R6","R7","CS","S12","S24","S3","S6","S7")) #edit this part to classify treatments, so I need to count the number of columns and assign a number to the group
-#DGE list data class
-y <- DGEList(counts=matrixDGA,group=group)
-#filtering low reads
-keep <- filterByExpr(y)
-y <- y[keep,,keep.lib.sizes=FALSE]
+keep <- filterByExpr(y) #keeps rows that have worthwhile counts in a minumum number of samples (two samples in this case because the smallest group size is two
+table(keep)
+y <- y[keep, , keep.lib.sizes=FALSE] #filter the ones that have high expression
 y <- calcNormFactors(y)
-design <- model.matrix(~group)
-y <- estimateDisp(y,design)
+y$samples
 
-#To perform likelihood ratio test
-fit <- glmFit(y,design)
-lrt <- glmLRT(fit,coef=2)
-topTags(lrt)
+plotMDS(y) #data exploration
 
-#DGE list data class
+#to examine further consistency of the three replicates, we compute predictive log2-fold- changes (logFC) for the treatment separately for the three times.
+design <- model.matrix(~tpi+tpi:Cultivar)
+logFC <- predFC(y,design,prior.count=1,dispersion=0.05)
+cor(logFC[,4:6])
 
+#falta crear una metriz de design
+design <- model.matrix(~tpi+Cultivar)
+rownames(design) <- colnames(y)
+design #no me sale T ni 12h?
 
+#Estimating the dispersion
+y <- estimateDisp(y, design, robust=TRUE) 
+y$common.dispersion #0.05059308 The square root of the common dispersion gives the coefficient of variation of biological 
+#variation. Here the common dispersion is found to be 0.05059308, so the coefficient of biological variation is around 0.225.
+plotBCV(y) #dispersion estimates
 
+#QL DISPERSIONS (change to likelihood, bc this is quasi likelihood)
+fit <- glmQLFit(y, design, robust=TRUE) 
+plotQLDisp(fit)
+qlf <- glmQLFTest(fit, coef=2:3) #here it need to be compared the different groups and time post infection 
+topTags(qlf)
 
+FDR <- p.adjust(qlf$table$PValue, method="BH")
+sum(FDR < 0.05)
+
+#pathogen effect and show the top genes
+qlf <- glmQLFTest(fit)
+topTags(qlf)
+#counts-per-million for the top gene
+top <- rownames(topTags(qlf))
+cpm(y)[top,]
+#The total number of genes significantly up-regulated or down-regulated at 5% FDR
+summary(decideTests(qlf))
+plotMD(qlf)
+abline(h=c(-1,1), col="blue")
 
 
 
