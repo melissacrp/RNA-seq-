@@ -22,46 +22,40 @@ getwd()
 matrixDGA <- read.delim(file = "/Users/melissa/Desktop/Transcriptomics&Bioinformatics | Thesis/counts/clean_banana_featurecounts.txt", header = TRUE, 
                         sep=" ")
 Cultivar <- factor(c("T","T","T","T","T","T","W","W","W","W","W","W"))
-tpi <- factor(c("C","12h","24h","3d","6d","7d","C","12h","24h","3d","6d","7d")) #C is 6-12h with mock
+tpi <- factor(c("6h","12h","24h","72h","144h","168h","6h","12h","24h","72h","144h","168h")) #C is 6-12h with mock
 colnames(matrixDGA) = c("Gene ID","CT6-12h","T12h","T24h","T3d","T6d","T7d","CW6-12h","W12h","W24h","W3d","W6d","W7d")
-y <- DGEList(counts=matrixDGA[,2:13], genes=matrixDGA[,1],group = Cultivar)
+types <- factor(c("A","B","C","D","E","F","G","H","I","J","K","L")) #just to differentiate the groups
 
+#here need to account for no replicatesr
+y <- DGEList(counts=matrixDGA[,2:13], genes=matrixDGA[,1],group = types)
 
+#create conditions matrix
+targets <- data.frame(Sample = colnames(y),Cultivar,tpi)
+Group <- factor(paste(targets$Cultivar,targets$tpi,sep="."))
+cbind(targets,Group=Group)
 keep <- filterByExpr(y) #keeps rows that have worthwhile counts in a minumum number of samples (two samples in this case because the smallest group size is two
 table(keep)
-y <- y[keep, , keep.lib.sizes=FALSE] #filter the ones that have high expression
+y <- y[keep, , keep.lib.sizes=FALSE] #filtrar los que no tienen un nivel significativo de expresion
 y <- calcNormFactors(y)
 y$samples
 
 plotMDS(y) #data exploration
 
-#to examine further consistency of the three replicates, we compute predictive log2-fold- changes (logFC) for the treatment separately for the three times.
-design <- model.matrix(~tpi+tpi:Cultivar)
-logFC <- predFC(y,design,prior.count=1,dispersion=0.05)
-cor(logFC[,4:6])
+#design matrix
+design <- model.matrix(~0+Group)
+colnames(design) <- levels(Group)
+bcv <- 0.2
+fit <- glmFit(y, design, dispersion = bcv^2)
 
-#falta crear una metriz de design
-design <- model.matrix(~tpi+Cultivar)
-rownames(design) <- colnames(y)
-design #no me sale T ni 12h?
+#likelihood (it was changed)
+lrt <- glmLRT(fit,coef=2)
+topTags(lrt)
 
-#Estimating the dispersion
-y <- estimateDisp(y, design, robust=TRUE) 
-y$common.dispersion #0.05059308 The square root of the common dispersion gives the coefficient of variation of biological 
-#variation. Here the common dispersion is found to be 0.05059308, so the coefficient of biological variation is around 0.225.
-plotBCV(y) #dispersion estimates
+#Comparing all the groups
 
-#QL DISPERSIONS (change to likelihood, bc this is quasi likelihood)
-fit <- glmQLFit(y, design, robust=TRUE) 
-plotQLDisp(fit)
-qlf <- glmQLFTest(fit, coef=2:3) #here it need to be compared the different groups and time post infection 
-topTags(qlf)
-
-FDR <- p.adjust(qlf$table$PValue, method="BH")
-sum(FDR < 0.05)
 
 #pathogen effect and show the top genes
-qlf <- glmQLFTest(fit)
+qlf <- glmLRT(fit)
 topTags(qlf)
 #counts-per-million for the top gene
 top <- rownames(topTags(qlf))
@@ -70,6 +64,15 @@ cpm(y)[top,]
 summary(decideTests(qlf))
 plotMD(qlf)
 abline(h=c(-1,1), col="blue")
+
+
+
+
+
+
+
+
+
 
 
 
