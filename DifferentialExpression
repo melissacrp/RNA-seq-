@@ -44,12 +44,11 @@ y$samples
 
 plotMDS(y) #data exploration
 
-#falta crear una metriz de design
+#create a design matrix
 design <- model.matrix(~0+Group)
 colnames(design) <- levels(Group)
 
-#rownames(design) <- colnames(y)
-#design #no me sale T ni 12h?
+#assigning a bcv value because there is no way to estimate dispersion 
 bcv <- 0.2
 fit <- glmFit(y, design, dispersion = bcv^2)
 #likelihood (it was changed)
@@ -78,9 +77,6 @@ my.contrasts <- makeContrasts(
 
 fit.col.names <- colnames(fit)
 fit.col.names[1:6]
-
-cntr <- list("T.12vs6","T.24vs6","T.72vs6","T.144vs6","T.168vs6","W.12vs6","W.24vs6","W.72vs6","W.144vs6","W.168vs6",
-             "TvsW.6h","TvsW.12h","TvsW.24h","TvsW.72h","TvsW.144h","TvsW.168h")
 
 #genes responding differently to the infection in Tuu gia vs the control 
 qlf1 <- glmLRT(fit, contrast=my.contrasts[,"T.12vs6"])
