@@ -1,0 +1,2 @@
+from bioinfokit.analys import Fasta
+bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = "names-T.12vs6-filt.csv")
