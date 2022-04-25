@@ -1,3 +1,12 @@
 import bioinfokit
 from bioinfokit.analys import Fasta
-bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = "names-T.12vs6-filt.csv")
+names = ["names-TvsW.12h-filt.csv", "names-W.12vs6-filt.csv",
+"names-T.12vs6-filt.csv", "names-TvsW.144h-filt.csv",	"names-W.144vs6-filt.csv", "names-T.144vs6-filt.csv", "names-TvsW.168h-filt.csv",	
+"names-W.168vs6-filt.csv", "names-T.168vs6-filt.csv",	"names-TvsW.24h-filt.csv", "names-W.24vs6-filt.csv", "names-T.24vs6-filt.csv",		
+"names-TvsW.6h-filt.csv",	"names-W.72vs6-filt.csv", "names-T.72vs6-filt.csv", "names-TvsW.72h-filt.csv"]
+
+for file in 
+bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = "names-T.12vs6-filt.txt")
+
+for file in *.csv:
+file.csv = bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = file)
