@@ -1,0 +1,7 @@
+
+#Download Arabidopsis CDS
+
+#make database
+makeblastdb -in Araport11_cds_20220505 -dbtype nucl
+
+blastn -query CDSnames-T.12vs6-filt.csv.fasta -db Users/melissa/Desktop/Transcriptomics-thesis/DGE-Analysis/database-ARAB/Araport11_cds_20220505 -max_hsps 1 -out T-12vs6.txt
