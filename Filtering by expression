@@ -1,0 +1,15 @@
+## With the filtered toptags of all the relevant genes, files are going to be filtered by high (logFC>0) and low expression (logFC<0)
+## This will facilitate the posterior analysis
+
+#first enter to the folder where the filtered genes are found (in column 3 if the logFC info)
+
+awk -F "," '{ if($3 > 0) { print }}' T.12vs6-filt.csv > posit-T.12vs6-filt.csv
+
+for x in *filt.csv;
+do awk -F "," '{ if($3 > 0) { print }}' x > posit$x;
+posit$x 
+done
+
+for x in *filt.csv;
+do awk -F "," '{ if($3 < 0) { print }}' x > negat$x;
+done
