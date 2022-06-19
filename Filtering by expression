@@ -6,10 +6,11 @@
 awk -F "," '{ if($3 > 0) { print }}' T.12vs6-filt.csv > posit-T.12vs6-filt.csv
 
 for x in *filt.csv;
-do awk -F "," '{ if($3 > 0) { print }}' x > posit$x;
-posit$x 
+do awk -F "," '{ if($3 > 0) { print }}' $x > posit$x
+awk -F "," '{print $2}' posit$x > genes-posit$x;
 done
 
 for x in *filt.csv;
-do awk -F "," '{ if($3 < 0) { print }}' x > negat$x;
+do awk -F "," '{ if($3 < 0) { print }}' x > negat$x
+awk -F "," '{print $2}' negat$x > genes-negat$x;
 done
