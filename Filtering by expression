@@ -12,6 +12,7 @@ for x in *filt.csv;
 do 
 awk -F "," '{ if($3 > 0) { print }}' $x > "posit$x"
 awk -F "," '{print $2}' "posit$x" > "genes-posit$x"
+awk '{gsub(/"/,"")};1' "genes-posit$x" > "n-$x";
 mv *posit* /Users/melissa/Desktop/DGE-Analysis/positive-expression;
 done
 
@@ -19,6 +20,7 @@ for y in *filt.csv;
 do
 awk -F "," '{ if($3 < 0) { print }}' $y > "negat$y"
 awk -F "," '{print $2}' "negat$y" > "genes-negat$y"
+awk '{gsub(/"/,"")};1' "genes-negat$y" > "n-$y";
 mv *negat* /Users/melissa/Desktop/DGE-Analysis/negative-expression;
 done
 
@@ -27,4 +29,5 @@ done
 
 for z in genes*;
 do
-awk '{gsub(/"/,"")};1' $z > "gene$
+awk '{gsub(/"/,"")};1' $z > "n-$z";
+done
