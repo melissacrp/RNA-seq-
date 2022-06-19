@@ -21,3 +21,10 @@ awk -F "," '{ if($3 < 0) { print }}' $y > "negat$y"
 awk -F "," '{print $2}' "negat$y" > "genes-negat$y"
 mv *negat* /Users/melissa/Desktop/DGE-Analysis/negative-expression;
 done
+
+# the gene list generated has "" that avoid the bioinfokit program to detect it
+# so it is important to remove them 
+
+for z in genes*;
+do
+awk '{gsub(/"/,"")};1' $z > "gene$
