@@ -5,12 +5,19 @@
 
 awk -F "," '{ if($3 > 0) { print }}' T.12vs6-filt.csv > posit-T.12vs6-filt.csv
 
-for x in *filt.csv;
-do awk -F "," '{ if($3 > 0) { print }}' $x > posit$x
-awk -F "," '{print $2}' posit$x > genes-posit$x;
-done
+mkdir positive-expression
+mkdir negative-expression
 
 for x in *filt.csv;
-do awk -F "," '{ if($3 < 0) { print }}' x > negat$x
-awk -F "," '{print $2}' negat$x > genes-negat$x;
+do 
+awk -F "," '{ if($3 > 0) { print }}' $x > "posit$x"
+awk -F "," '{print $2}' "posit$x" > "genes-posit$x"
+mv *posit* /Users/melissa/Desktop/DGE-Analysis/positive-expression;
+done
+
+for y in *filt.csv;
+do
+awk -F "," '{ if($3 < 0) { print }}' $y > "negat$y"
+awk -F "," '{print $2}' "negat$y" > "genes-negat$y"
+mv *negat* /Users/melissa/Desktop/DGE-Analysis/negative-expression;
 done
