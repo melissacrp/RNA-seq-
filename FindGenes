@@ -1,20 +1,17 @@
 
 import bioinfokit
 from bioinfokit.analys import Fasta
-names = ["names-TvsW.12h-filt.csv", "names-W.12vs6-filt.csv",
-"names-T.12vs6-filt.csv", "names-TvsW.144h-filt.csv",	"names-W.144vs6-filt.csv", "names-T.144vs6-filt.csv", "names-TvsW.168h-filt.csv",	
-"names-W.168vs6-filt.csv", "names-T.168vs6-filt.csv",	"names-TvsW.24h-filt.csv", "names-W.24vs6-filt.csv", "names-T.24vs6-filt.csv",		
-"names-TvsW.6h-filt.csv",	"names-W.72vs6-filt.csv", "names-T.72vs6-filt.csv", "names-TvsW.72h-filt.csv"]
 
-
-for file in names:
-  bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = file)
-  os.rename("output.fasta", "CDS"+str(file[6,])+".fasta")
+#in the folder with the positive regulated
 
 import os
 list = os.listdir() #returns list of things in directory
-genes = [item for item in list if item.startswith('genes')]
+nega_genes = [item for item in list_nega if item.startswith('n-genes')]
 
-for gene in genes:
+for gene in nega_genes:
   bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
-  os.rename("output.fasta", "CDS"+str(gene[5:-4])+".fasta")
+  os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
+
+for gene in posi_genes:
+  bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
+  os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
