@@ -15,3 +15,7 @@ for gene in nega_genes:
 for gene in posi_genes:
   bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
   os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
+
+#GeneFam
+
+bioinfokit.analys.genfam.fam_enrich(id_file=, species=macu, id_type=2)
