@@ -5,3 +5,24 @@
 makeblastdb -in Araport11_cds_20220505 -dbtype nucl
 
 blastn -query CDSnames-T.12vs6-filt.csv.fasta -db Users/melissa/Desktop/Transcriptomics-thesis/DGE-Analysis/database-ARAB/Araport11_cds_20220505 -max_hsps 1 -out T-12vs6.txt
+
+#to do the blast everything has to be in the same folder
+
+
+blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARABTAIR10_cds_20101214_updated -query /Users/melissa/Desktop/DGE-Analysis/negative-expression/CDSnegatW.12vs6-filt.fasta -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out ARAB-W-12vs6.fasta
+
+blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query CDSnegatW.12vs6-filt.fasta -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out ARAB-W-12vs6.fasta
+
+#going to the folder with the CDS sequences
+
+for x in CDS*;
+do
+blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
+mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/negative-expression/ARB-ortho;
+done
+
+for x in CDS*;
+do
+blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
+mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
+done
