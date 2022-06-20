@@ -31,3 +31,10 @@ for z in genes*;
 do
 awk '{gsub(/"/,"")};1' $z > "n-$z";
 done
+
+for x in ARAB*;
+do
+awk -F "," '{print $2}' $x > "x-$x"
+mv *posi* /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
+done
+
