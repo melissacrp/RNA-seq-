@@ -21,8 +21,10 @@ blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_2010121
 mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/negative-expression/ARB-ortho;
 done
 
+if
 for x in CDS*;
 do
+
 blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
 mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
 done
