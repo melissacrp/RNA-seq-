@@ -16,32 +16,7 @@ for gene in posi_genes:
   bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
   os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
 
-#GeneFam
 
-from bioinfokit.analys import genfam
-res = genfam()
-
-list_nega = os.listdir() #returns list of things in directory
-arab_genes = [item for item in list_nega if item.startswith('x-ARAB')]
-
-fail = 'FailGenFam.txt'
-
-for file in arab_genes:
-  
-  if sum(1 for line in open(file)) >= 5:
-
-    res.fam_enrich(id_file = file, species = 'atha', id_type = 2)
-    os.rename("fam_all_out.txt", "fam_all_"+str(file[10:-11])+".txt")
-    os.rename("fam_enrich_out.txt", "fam_enrich_"+str(file[10:-11])+".txt")
-    os.rename("genfam_enrich.png", str(file[10:-11])+".png")
-  
-  else:
-    with open(fail, 'a') as x:
-      x.write(str(file))
-      x.write('\n')
-      x.close()
-    
- #next move using linux to respective folders and repeat the process in the other directory (positive or negative)   
     
   
   
