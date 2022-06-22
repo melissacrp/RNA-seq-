@@ -28,3 +28,20 @@ do
 blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
 mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
 done
+
+#The wrong CDS was used, ao a new blast with Phytozome v12 2017 of A. thaliana 2017
+
+makeblastdb -in Athaliana_447_Araport11.cds_primaryTranscriptOnly.fa -dbtype nucl
+
+#Go inside the CDS sequences of banana (in this case)
+
+cd /Users/melissa/Desktop/DGE-Analysis/Names-ID
+
+for x in CDS*;
+do
+blastn -db /Users/melissa/Desktop/DGE-Analysis/Try-TAIR2017/ARAB-db/Athaliana_447_Araport11.cds_primaryTranscriptOnly.fa -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
+mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/Try-TAIR2017/ARB-ortho;
+done
+
+
+
