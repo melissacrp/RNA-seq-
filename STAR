@@ -4,6 +4,11 @@ conda install -c bioconda star
 /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf 
 /home/melissarp_mr/index #para guardar el indice
 /home/melissarp_mr/Trans/fastp/out-fastp #reads
+conda install -c bioconda agat #to convert gff to gtf 
+
+
+
+agat_convert_sp_gff2gtf.pl -gff Musa_acuminata_pahang_v4.gff3 -o Musa_acuminata_pahang_v4.gtf #to convert from gff3 to gtf
 
 STAR --runThreadN 64 --runMode genomeGenerate --genomeDir index --genomeFastaFiles /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.fasta --sjdbGTFfile /home/melissarp_mr/hisat/Musa_acuminata_pahang_v4.gtf 
 mkdir starAligned 
