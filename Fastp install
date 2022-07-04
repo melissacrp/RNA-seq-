@@ -1,11 +1,11 @@
 conda install -c bioconda fastp
-for x in *.fastq; do fastp -i $x -o "out-$x" -h "out-h-$x.html" -j "out-j-$x.json"; mkdir "fastp-$x";
-mv "out-$x"* /Volumes/MelissaCRP/Transcriptomics-RNA-seq/filtered/"fastp-$x"; 
-mv "fastp-$x" /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastpfilter; done
-#here I grouped the outputs depending on the individual analized 
 
-for x in *.fastq; do fastp -i $x -o "out-$x" -h "out-h-$x.html" -j "out-j-$x.json"; done
+for x in *.fastq; 
+do 
+fastp -i $x -o "out-$x" -h "out-h-$x.html" -j "out-j-$x.json"; 
+done
+
 mv out-*.fastq /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastp-outputs/out-fastp
 mv out-h* /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastp-outputs/out-html
 mv out-j* /Volumes/MelissaCRP/Transcriptomics-RNA-seq/fastp-outputs/out-json
-#I prefer this code right here because it separates the files depending on the type
+
