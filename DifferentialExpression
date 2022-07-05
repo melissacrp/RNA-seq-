@@ -79,15 +79,22 @@ my.contrasts <- makeContrasts(
 fit.col.names <- colnames(fit)
 fit.col.names[1:6]
 
-#genes responding differently to the infection in Tuu gia vs the control 
-qlf1 <- glmLRT(fit, contrast=my.contrasts[,"T.12vs6"])
-plotMD(qlf1)
-out1 <- topTags(qlf1)
+list_treat <- list("T.12vs6", "T.24vs6", "T.72vs6", "T.144vs6", "T.168vs6", "W.12vs6", "W.24vs6", "W.72vs6", "W.144vs6", "W.168vs6", ""
+
+#FIlter
 #this is done to all the treatments
 keep <- out1$table$FDR < 0.05 & abs(out$table$logFC) > 1
 filt <- out1[keep,]
-######
+
+#genes responding differently to the infection in Tuu gia vs the control 
+qlf1 <- glmLRT(fit, contrast=my.contrasts[,"T.12vs6"])
+plot1 <-plotMD(qlf1)
+out1 <- topTags(qlf1)
 summary(decideTests(qlf1))
+
+for i in 
+
+
 
 qlf2 <- glmLRT(fit, contrast=my.contrasts[,"T.24vs6"])
 plotMD(qlf2)
