@@ -6,9 +6,9 @@ from bioinfokit.analys import Fasta
 
 import os
 list = os.listdir() #returns list of things in directory
-nega_genes = [item for item in list_nega if item.startswith('n-genes')]
+genes = [item for item in list_nega if item.startswith('genes')]
 
-for gene in nega_genes:
+for gene in genes:
   bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
   os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
 
