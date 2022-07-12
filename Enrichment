@@ -1,34 +1,4 @@
 
-#Download Arabidopsis CDS
-
-#make database
-makeblastdb -in Araport11_cds_20220505 -dbtype nucl
-
-blastn -query CDSnames-T.12vs6-filt.csv.fasta -db Users/melissa/Desktop/Transcriptomics-thesis/DGE-Analysis/database-ARAB/Araport11_cds_20220505 -max_hsps 1 -out T-12vs6.txt
-
-#to do the blast everything has to be in the same folder
-
-
-blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARABTAIR10_cds_20101214_updated -query /Users/melissa/Desktop/DGE-Analysis/negative-expression/CDSnegatW.12vs6-filt.fasta -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out ARAB-W-12vs6.fasta
-
-blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query CDSnegatW.12vs6-filt.fasta -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out ARAB-W-12vs6.fasta
-
-#going to the folder with the CDS sequences
-
-for x in CDS*;
-do
-blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
-mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/negative-expression/ARB-ortho;
-done
-
-if
-for x in CDS*;
-do
-
-blastn  -db /Users/melissa/Desktop/DGE-Analysis/database-ARAB/TAIR10_cds_20101214_updated -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "ARAB-$x"
-mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
-done
-
 #The wrong CDS was used, ao a new blast with Phytozome v12 2017 of A. thaliana 2017
 
 makeblastdb -in Athaliana_447_Araport11.cds_primaryTranscriptOnly.fa -dbtype nucl
@@ -44,4 +14,16 @@ mv "ARAB-$x" /Users/melissa/Desktop/DGE-Analysis/Try-TAIR2017/ARB-ortho;
 done
 
 
+#BlastX
+makeblastdb -in Athaliana_447_Araport11.protein.fa -dbtype prot -parse_seqids -out ArabidpsisProt
+
+for x in CDS*;
+do
+blastx -db /Users/melissa/Desktop/DGE-Analysis/Protein/Database/ArabidpsisProt -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "prot-$x"
+mv "prot-$x" /Users/melissa/Desktop/DGE-Analysis/Protein/Database/Pept-DEG;
+done
+
+
+
+blastx -db /Users/melissa/Desktop/DGE-Analysis/Protein/Database/ArabidpsisProt -query CDSnames-T.12vs6-filt.csv.fasta	 -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out prot-CDSnames-T.12vs6-filt.csv.fasta	
 
