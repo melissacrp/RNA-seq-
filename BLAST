@@ -24,8 +24,5 @@ mv "prot-$x" /Users/melissa/Desktop/DGE-Analysis/Protein/Database/Pept-DEG;
 done
 
 
-for x in *;
-do
-blastx -db /Users/melissa/Desktop/DGE-Analysis/Protein/Database/ArabidpsisProt -query $x -max_target_seqs 1 -outfmt "10 qseqid sseqid" -out "prot-$x";
-done
+
 
