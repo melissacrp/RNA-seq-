@@ -1,0 +1,6 @@
+#to convert gff to gtf 
+
+conda install -c bioconda agat 
+
+agat_convert_sp_gff2gtf.pl -gff Musa_acuminata_pahang_v4.gff3 -o Musa_acuminata_pahang_v4.gtf #to convert from gff3 to gtf
+
