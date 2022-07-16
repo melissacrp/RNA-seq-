@@ -12,10 +12,6 @@ for gene in genes:
   bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
   os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
 
-for gene in posi_genes:
-  bioinfokit.analys.Fasta.extract_seq(file = "Musa_acuminata_pahang_v4.cds.fa" , id = gene)
-  os.rename("output.fasta", "CDS"+str(gene[8:-4])+".fasta")
-
 
     
   
