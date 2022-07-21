@@ -23,6 +23,16 @@ blastx -db /Users/melissa/Desktop/DGE-Analysis/Protein/Database/ArabidpsisProt -
 mv "prot-$x" /Users/melissa/Desktop/DGE-Analysis/Protein/Database/Pept-DEG;
 done
 
+#counting the genes found in the gene expression analysis and also the results found via blastx
+
+#inside the gene-names directory
+
+for x in *
+do
+echo $x
+wc -l $x | awk '{print $1-1}'
+done
+
 
 
 
