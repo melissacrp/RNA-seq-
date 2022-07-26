@@ -38,3 +38,11 @@ awk -F "," '{print $2}' $x > "x-$x"
 mv *posi* /Users/melissa/Desktop/DGE-Analysis/positive-expression/ARB-ortho;
 done
 
+#Blastx gave some results that were repeated, I want to know the number of matches with the organism, so i performed uniq 
+
+for x in *
+do
+uniq $x | wc -l
+done
+
+
