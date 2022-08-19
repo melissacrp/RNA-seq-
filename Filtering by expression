@@ -47,4 +47,5 @@ done
 
 
 awk -F',' '{print $2,$7}' TvsW.72h-filt.csv > FDR-TvsW.72h-filt.txt | awk '{gsub(/"/,"")};1' output.txt > TvsW72h.txt
+awk -F'[[:blank:]]' -v OFS="\t" '{$1=$1; print}' input.txt > output.txt
 
