@@ -15,7 +15,7 @@ for file in arab_genes:
   
   try:
 
-    res.fam_enrich(id_file = file, species = 'atha', id_type = 2)
+    res.fam_enrich(id_file = file, species = 'osat', id_type = 1)
     os.rename("fam_all_out.txt", "fam_all_"+str(file[10:-11])+".txt")
     os.rename("fam_enrich_out.txt", "fam_enrich_"+str(file[10:-11])+".txt")
     os.rename("genfam_enrich.png", str(file[10:-11])+".png")
