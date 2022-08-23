@@ -17,8 +17,8 @@ for file in arab_genes:
 
     res.fam_enrich(id_file = file, species = 'osat', id_type = 2)
     os.rename("fam_all_out.txt", "fam_all_"+str(file[10:-11])+".txt")
-    os.rename("fam_enrich_out.txt", "fam_enrich_"+str(file[10:-11])+".txt")
-    os.rename("genfam_enrich.png", str(file[10:-11])+".png")
+    os.rename("fam_enrich_out.txt", "fam_enrich_"+str(file[20:-15])+".txt")
+    os.rename("genfam_enrich.png", str(file[20:-15])+".png")
   
   except Exception:
     with open(fail, 'a') as x:
