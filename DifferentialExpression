@@ -93,10 +93,14 @@ out1 <- topTags(qlf1)
 summary(decideTests(qlf1))
 
 for (i in list_treat) {
-assign(paste0("qlf-", i), glmLRT(fit, contrast=my.contrasts[, i]))
-assign(paste0("plot-", i), plotMD(i))
-assign(paste0("tTags-", i), topTags(i))
-assign(paste0("summar", i), decideTests(i))
+a = glmLRT(fit, contrast=my.contrasts[, i])
+assign(paste0("qlf-", i), a)
+b = plotMD(i)
+assign(paste0("plot-", i), b)
+c = topTags(i)
+assign(paste0("tTags-", i), c)
+d = decideTests(i)
+assign(paste0("smr", i), d)
 }
 
 
