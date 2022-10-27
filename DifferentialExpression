@@ -58,133 +58,57 @@ topTags(lrt)
 lrt
 
 my.contrasts <- makeContrasts(
-           T.12vs6 = T.12h-T.6h,
-           T.24vs6 = T.24h-T.6h,
-           T.72vs6 = T.72h-T.6h,
-   T.144vs6 = T.144h-T.6h,
-   T.168vs6 = T.168h-T.6h,
-           W.12vs6 = W.12h-W.6h,
-           W.24vs6 = W.24h-W.6h,
-           W.72vs6 = W.72h-W.6h,
-   W.144vs6 = W.144h-W.6h,
-   W.168vs6 = W.168h-W.6h,
-          TvsW.6h = T.6h-W.6h,
-           TvsW.12h = (T.12h-T.6h)-(W.12h-W.6h),
-           TvsW.24h = (T.24h-T.6h)-(W.24h-W.6h),
-   TvsW.72h = (T.72h-T.6h)-(W.72h-W.6h),
-   TvsW.144h = (T.144h-T.6h)-(W.144h-W.6h),
-   TvsW.168h = (T.168h-T.6h)-(W.168h-W.6h),
-   levels=design)
-
+  T.12vs6 = T.12h-T.6h,
+  T.24vs6 = T.24h-T.6h,
+  T.72vs6 = T.72h-T.6h,
+  T.144vs6 = T.144h-T.6h,
+  T.168vs6 = T.168h-T.6h,
+  W.12vs6 = W.12h-W.6h,
+  W.24vs6 = W.24h-W.6h,
+  W.72vs6 = W.72h-W.6h,
+  W.144vs6 = W.144h-W.6h,
+  W.168vs6 = W.168h-W.6h,
+  TvsW.6h = T.6h-W.6h,
+  #Unique genes in resistant cultivar
+  TvsW.12h = (T.12h-T.6h)-(W.12h-W.6h),
+  TvsW.24h = (T.24h-T.6h)-(W.24h-W.6h),
+  TvsW.72h = (T.72h-T.6h)-(W.72h-W.6h),
+  TvsW.144h = (T.144h-T.6h)-(W.144h-W.6h),
+  TvsW.168h = (T.168h-T.6h)-(W.168h-W.6h),
+  #Unique genes in susceptible cultivar
+  WvsT.12h = (W.12h-W.6h)-(T.12h-T.6h),
+  WvsT.24h = (W.24h-W.6h)-(T.24h-T.6h),
+  WvsT.72h = (W.72h-W.6h)-(T.72h-T.6h),
+  WvsT.144h = (W.144h-W.6h)-(T.144h-T.6h),
+  WvsT.168h = (W.168h-W.6h)-(T.168h-T.6h),
+  levels=design)
+  
 fit.col.names <- colnames(fit)
 fit.col.names[1:6]
 
-list_treat <- list("T.12vs6", "T.24vs6", "T.72vs6", "T.144vs6", "T.168vs6", "W.12vs6", "W.24vs6", "W.72vs6", "W.144vs6", "W.168vs6", ""
+cntr <- list("T.12vs6","T.24vs6","T.72vs6","T.144vs6","T.168vs6","W.12vs6","W.24vs6","W.72vs6","W.144vs6","W.168vs6",
+             "TvsW.6h","TvsW.12h","TvsW.24h","TvsW.72h","TvsW.144h","TvsW.168h")
 
 #FIlter
 #this is done to all the treatments
 keep <- out1$table$FDR < 0.05 & abs(out$table$logFC) > 1
 filt <- out1[keep,]
 
-#genes responding differently to the infection in Tuu gia vs the control 
-qlf1 <- glmLRT(fit, contrast=my.contrasts[,"T.12vs6"])
-plot1 <-plotMD(qlf1)
-out1 <- topTags(qlf1)
-summary(decideTests(qlf1))
-
-for (i in list_treat) {
-a = glmLRT(fit, contrast=my.contrasts[, i])
-assign(paste0("qlf-", i), a)
-b = plotMD(i)
-assign(paste0("plot-", i), b)
-c = topTags(i)
-assign(paste0("tTags-", i), c)
-d = decideTests(i)
-assign(paste0("smr", i), d)
+for (i in cntr) {
+  a = glmLRT(fit, contrast=my.contrasts[, i])
+  assign(paste0("qlf-", i), a)
+  b = plotMD(a)
+  assign(paste0("plot-", i), b)
+  c = topTags(a)
+  assign(paste0("tTags-", i), c)
+  write.csv(c, paste0(i,".csv"))
+  keep <- c$table$FDR < 0.05 & abs(c$table$logFC) > 1
+  filt <- c[keep,]
+  write.csv(filt, paste0(i,"-filt.csv")
+  d = decideTests(a)
+  assign(paste0("smr-", i), d)
 }
 
-
-
-
-qlf2 <- glmLRT(fit, contrast=my.contrasts[,"T.24vs6"])
-plotMD(qlf2)
-topTags(qlf2)
-summary(decideTests(qlf2))
-
-qlf3 <- glmLRT(fit, contrast=my.contrasts[,"T.72vs6"])
-plotMD(qlf3)
-topTags(qlf3)
-summary(decideTests(qlf3))
-
-qlf4 <- glmLRT(fit, contrast=my.contrasts[,"T.144vs6"])
-plotMD(qlf4)
-topTags(qlf4)
-summary(decideTests(qlf4))
-
-qlf5 <- glmLRT(fit, contrast=my.contrasts[,"T.168vs6"])
-plotMD(qlf5)
-topTags(qlf5)
-summary(decideTests(qlf5))
-
-#genes responding differently to the infection in Williams vs the control 
-qlf6 <- glmLRT(fit, contrast=my.contrasts[,"W.12vs6"])
-plotMD(qlf6)
-topTags(qlf6)
-summary(decideTests(qlf6))
-
-qlf7 <- glmLRT(fit, contrast=my.contrasts[,"W.24vs6"])
-plotMD(qlf7)
-topTags(qlf7)
-summary(decideTests(qlf7))
-
-qlf8 <- glmLRT(fit, contrast=my.contrasts[,"W.72vs6"])
-plotMD(qlf8)
-topTags(qlf8)
-summary(decideTests(qlf8))
-
-qlf9 <- glmLRT(fit, contrast=my.contrasts[,"W.144vs6"])
-plotMD(qlf9)
-topTags(qlf9)
-summary(decideTests(qlf9))
-
-qlf10 <- glmLRT(fit, contrast=my.contrasts[,"W.168vs6"])
-plotMD(qlf10)
-topTags(qlf10)
-summary(decideTests(qlf10))
-
-#baseline difference between the control
-qlf11 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.6h"])
-plotMD(qlf11)
-topTags(qlf11)
-summary(decideTests(qlf11))
-
-
-#genes responding differently between the two cultivars
-qlf12 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.12h"])
-plotMD(qlf12)
-topTags(qlf12)
-summary(decideTests(qlf12))
-
-
-qlf13 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.24h"])
-plotMD(qlf13)
-topTags(qlf13)
-summary(decideTests(qlf13))
-
-qlf14 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.72h"])
-plotMD(qlf14)
-topTags(qlf14)
-summary(decideTests(qlf14))
-
-qlf15 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.144h"])
-plotMD(qlf15)
-topTags(qlf15)
-summary(decideTests(qlf15))
-
-qlf16 <- glmLRT(fit, contrast=my.contrasts[,"TvsW.168h"])
-plotMD(qlf16)
-topTags(qlf16)
-summary(decideTests(qlf16))
 
 #pathogen effect in Tuu gia cultivar and show the top genes
 qlfT <- glmLRT(fit, coef = c(1,2,3,4,5,6))
